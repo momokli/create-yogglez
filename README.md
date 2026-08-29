@@ -17,6 +17,10 @@ in your hand, but take over UI and information display exclusively.
   tools (e.g. wrenches) stay in your hand for manual interaction.
 - **Developer API for modpacks** — pack authors can integrate third-party
   analysis tools (e.g. via JSON/KubeJS) as goggle lenses.
+- **Physical item, not a client-side overlay** — the goggles are a real,
+  server-side item (craft, hold, wear, trade); lenses live in the item data.
+  Client-side-only approaches (e.g. Create: Cyber Goggles) miss the vision.
+  See [`mod-design/abgrenzung_cyber_goggles.md`](mod-design/abgrenzung_cyber_goggles.md).
 
 ## Example lenses (handheld-analyzer replacements)
 
@@ -144,3 +148,4 @@ are pulled from the configured Maven repositories automatically.
 
 - [`mod-design/yizzl_initial_thoughts.md`](mod-design/yizzl_initial_thoughts.md) — original idea
 - [`mod-design/linsenbrille.txt`](mod-design/linsenbrille.txt) — elaborated concept
+- [`mod-design/abgrenzung_cyber_goggles.md`](mod-design/abgrenzung_cyber_goggles.md) — design principle: physical item, not a client-side overlay (Yizzl)
