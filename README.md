@@ -1,6 +1,6 @@
-# Yogglez
+# create:yogglez
 
-![Yogglez lens concept](mod-design/create_brille_lenses.jpg)
+![create:yogglez lens concept](mod-design/create_brille_lenses.jpg)
 
 A central, modular goggle framework for Minecraft modpacks — built on top of the
 Create **Engineer's Goggles**.
