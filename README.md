@@ -1,5 +1,7 @@
 # Yogglez
 
+![Yogglez Linsen-Konzept](mod-design/create_brille_lenses.jpg)
+
 Ein zentrales, modulares Brillen-Framework für Minecraft-Modpacks — auf Basis der
 Create **Engineer's Goggles**.
 
@@ -20,11 +22,11 @@ Informationsanzeige.
 
 ## Beispielhafte Linsen (Hand-Analysator-Ersatz)
 
-| Mod | Ersetzt | Zeigt |
-| --- | --- | --- |
-| Applied Energistics 2 | Network Tool | Netzwerke & Kanäle |
+| Mod                   | Ersetzt               | Zeigt                      |
+| --------------------- | --------------------- | -------------------------- |
+| Applied Energistics 2 | Network Tool          | Netzwerke & Kanäle         |
 | Immersive Engineering | Engineer's Multimeter | Leitungen & Maschinenwerte |
-| Industrial Craft 2 | Scanner / Tricorder | Maschinenstatus & Energie |
+| Industrial Craft 2    | Scanner / Tricorder   | Maschinenstatus & Energie  |
 
 ## Steuerung
 
