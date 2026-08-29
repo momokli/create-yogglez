@@ -1,0 +1,34 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/momokli/create-yogglez/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="momokli"
+description='''A central, modular goggle framework for Minecraft modpacks - built on top of the Create Engineer's Goggles.
+
+Instead of carrying a separate handheld analyzer for every mod, you upgrade the engineer's goggles with swappable lenses. POC: own "Yogglez Goggles" item with a modular lens system, AE2 Network Lens as first foreign lens, and a demo test machine that proves the Create goggle overlay integration.'''
+
+[[dependencies.yogglez]]
+    modId="neoforge"
+    mandatory=true
+    versionRange="${loader_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.yogglez]]
+    modId="create"
+    mandatory=true
+    versionRange="[6.0.9,6.1.0)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.yogglez]]
+    modId="ae2"
+    mandatory=false
+    versionRange="[19.0.0,)"
+    ordering="NONE"
+    side="BOTH"
