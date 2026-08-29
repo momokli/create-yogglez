@@ -1,48 +1,45 @@
 # Yogglez
 
-![Yogglez Linsen-Konzept](mod-design/create_brille_lenses.jpg)
+![Yogglez lens concept](mod-design/create_brille_lenses.jpg)
 
-Ein zentrales, modulares Brillen-Framework für Minecraft-Modpacks — auf Basis der
+A central, modular goggle framework for Minecraft modpacks — built on top of the
 Create **Engineer's Goggles**.
 
-Statt für jede Mod einen eigenen Hand-Analysator mitzuschleppen, rüstest du die
-Ingenieursbrille mit aufrüstbaren **Linsen** auf. Die Brille bleibt dabei ein
-physisches Werkzeug in der Hand, übernimmt aber ausschließlich die UI- und
-Informationsanzeige.
+Instead of carrying a separate handheld analyzer for every mod, you upgrade the
+engineer's goggles with swappable **lenses**. The goggles stay a physical tool
+in your hand, but take over UI and information display exclusively.
 
-## Kernidee
+## Core idea
 
-- **Create-Integration als Basis** — die Engineer's Goggles werden um ein
-  modulares Linsensystem erweitert.
-- **Reines Analyse-Upgrade** — die Brille zeigt nur Informationen an. Physische
-  Werkzeuge (z. B. Schraubenschlüssel) bleiben für die manuelle Interaktion in
-  der Hand.
-- **Entwickler-API für Modpacks** — Pack-Autoren können fremde Analyse-Tools
-  (z. B. via JSON/KubeJS) als Brillen-Linsen integrieren.
+- **Create integration as the foundation** — the Engineer's Goggles are extended
+  with a modular lens system.
+- **Pure analysis upgrade** — the goggles only display information. Physical
+  tools (e.g. wrenches) stay in your hand for manual interaction.
+- **Developer API for modpacks** — pack authors can integrate third-party
+  analysis tools (e.g. via JSON/KubeJS) as goggle lenses.
 
-## Beispielhafte Linsen (Hand-Analysator-Ersatz)
+## Example lenses (handheld-analyzer replacements)
 
-| Mod                   | Ersetzt               | Zeigt                      |
-| --------------------- | --------------------- | -------------------------- |
-| Applied Energistics 2 | Network Tool          | Netzwerke & Kanäle         |
-| Immersive Engineering | Engineer's Multimeter | Leitungen & Maschinenwerte |
-| Industrial Craft 2    | Scanner / Tricorder   | Maschinenstatus & Energie  |
+| Mod                   | Replaces              | Shows                   |
+| --------------------- | --------------------- | ----------------------- |
+| Applied Energistics 2 | Network Tool          | Networks & channels     |
+| Immersive Engineering | Engineer's Multimeter | Wiring & machine values |
+| Industrial Craft 2    | Scanner / Tricorder   | Machine status & energy |
 
-## Steuerung
+## Controls
 
-- **Schnelldurchlauf** — per Tastendruck sequenziell durch die aktiven Linsen
-  schalten.
-- **Radialmenü** — Taste gedrückt halten öffnet ein visuelles Zahnrad-Menü im
-  Create-Stil zur direkten Linsenauswahl.
-- **Visuelles Feedback** — dezente HUD-Indikatoren oder Farb-Tints am
-  Bildschirmrand zeigen die aktive Ansicht an.
+- **Quick cycle** — cycle through the active lenses sequentially with a key press.
+- **Radial menu** — hold a key to open a Create-style gear menu for direct lens
+  selection.
+- **Visual feedback** — subtle HUD indicators or color tints at the screen edge
+  show the currently active view.
 
 ## Status
 
-⚠️ **Konzeptphase** — aktuell existieren nur Design-Notizen und das initiale
-Konzept (siehe [`mod-design/`](mod-design/)). Es gibt noch keinen Code.
+⚠️ **Concept phase** — only design notes and the initial concept exist so far
+(see [`mod-design/`](mod-design/)). There is no code yet.
 
-## Design-Notizen
+## Design notes
 
-- [`mod-design/yizzl_initial_thoughts.md`](mod-design/yizzl_initial_thoughts.md) — ursprüngliche Idee
-- [`mod-design/linsenbrille.txt`](mod-design/linsenbrille.txt) — ausgearbeitetes Konzept
+- [`mod-design/yizzl_initial_thoughts.md`](mod-design/yizzl_initial_thoughts.md) — original idea
+- [`mod-design/linsenbrille.txt`](mod-design/linsenbrille.txt) — elaborated concept
