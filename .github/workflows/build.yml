@@ -1,0 +1,58 @@
+name: Build (Linux)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    name: Build (JDK 21, Linux)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle (wrapper + dependency/build cache)
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Build (compile + processResources + jar)
+        run: ./gradlew build --no-daemon --console=plain
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: yogglez-jar
+          path: build/libs/*.jar
+
+  gametest:
+    name: GameTest smoke (headless)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle (wrapper + dependency/build cache)
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Run headless GameTestServer smoke test
+        run: |
+          # GameTestServer runs all registered gametests, then shuts down.
+          # With heavy mods (Create) the shutdown can hang after the tests
+          # passed, so the run is time-bounded and the success marker in the
+          # server log is the actual pass/fail signal.
+          timeout 1200 ./gradlew runGameTestServer --no-daemon --console=plain || true
+          grep -q "required tests passed" runs/gameTestServer/logs/latest.log

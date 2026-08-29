@@ -2,6 +2,8 @@
 
 ![create:yogglez lens concept](mod-design/create_brille_lenses.jpg)
 
+[![Build (Linux)](https://github.com/momokli/create-yogglez/actions/workflows/build.yml/badge.svg)](https://github.com/momokli/create-yogglez/actions/workflows/build.yml)
+
 A central, modular goggle framework for Minecraft modpacks — built on top of the
 Create **Engineer's Goggles**.
 
@@ -73,6 +75,12 @@ A proof-of-concept implementation of the core lens framework on
 
 Dev-run runtime mods (Create, Ponder, Flywheel, Vanillin, Registrate, AE2, GuideME)
 are pulled from the configured Maven repositories automatically.
+
+The build is fully **headless Linux-compatible** (JDK 21 Temurin, no display
+needed for `build`/`runGameTestServer`) and is verified in CI on every push/PR
+via GitHub Actions (`./gradlew build` + headless `runGameTestServer` smoke test).
+Note: the GameTestServer can hang during shutdown with heavy mods loaded — CI
+handles that by checking the "tests passed" marker in the server log.
 
 ### Milestones
 
