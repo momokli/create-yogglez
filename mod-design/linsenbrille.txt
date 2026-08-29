@@ -1,0 +1,15 @@
+Ein zentrales, modulares Brillen-Framework für Modpack-Ersteller, das die Create-Ingenieursbrille (Engineer's Goggles) als Basis nutzt, um den Inventar-Müll mod-spezifischer Hand-Analysatoren durch aufrüstbare Linsen zu ersetzen.
+
+Kernpunkte des Konzepts:
+    1Create-Integration als Basis: Die klassische Create-Ingenieursbrille dient als Fundament, das durch dein Mod um ein modulares Linsensystem erweitert wird.
+    2Reines Analyse-Upgrade: Die Brille übernimmt ausschließlich die UI- und Informationsanzeige. Physische Werkzeuge wie Schraubenschlüssel bleiben für die manuelle Interaktion in der Hand.
+    3Entwickler-API für Modpacks: Pack-Autoren erhalten eine unkomplizierte Möglichkeit (z. B. via JSON/KubeJS), fremde Analyse-Tools als Brillen-Upgrades zu integrieren.
+
+    4Beispielhafte Linsen (via Hand-Analysator-Ersatz):
+        Applied Energistics 2: Auslesen von Netzwerken und Kanälen (via Network Tool).
+        Immersive Engineering: Auslesen von Leitungen und Maschinenwerten (via Engineer's Multimeter).
+        Industrial Craft 2: Scannen von Maschinenstatus und Energie (via Scanner/Tricorder).
+    5Flexible Steuerung & Umschaltung:
+        Schnelldurchlauf: Per Tastendruck (z. B. eine Shortcut-Taste) sequenziell durch die aktiven Linsen schalten.
+        Radialmenü: Per Taste gedrückt halten ein visuelles Zahnrad-Menü im Create-Stil öffnen, um direkt die gewünschte Linse auszuwählen.
+        Visuelles Feedback: Dezente HUD-Indikatoren oder dezente Farb-Tints am Bildschirmrand zeigen sofort an, welche Ansicht aktiv ist.
