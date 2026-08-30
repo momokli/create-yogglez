@@ -1,0 +1,148 @@
+name: Build (Linux)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    name: Build (JDK 21, Linux)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle (wrapper + dependency/build cache)
+        uses: gradle/actions/setup-gradle@v4
+
+      # `build` includes `check` -> the headless POJO unit tests in src/test
+      # (5 test classes, no game classes) run as part of this job.
+      - name: Build (compile + processResources + jar + headless unit tests)
+        run: ./gradlew build --no-daemon --console=plain
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: yogglez-jar
+          path: build/libs/*.jar
+
+  unit-tests:
+    name: Unit tests (game-tagged, forgejunitdev)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle (wrapper + dependency/build cache)
+        uses: gradle/actions/setup-gradle@v4
+
+      # testJunit boots vanilla Minecraft classes (forgejunitdev, no display/
+      # GL needed) and runs the tests tagged "game" (LensProviderRegistryGameTest).
+      # The plain headless POJO tests already ran inside the build job.
+      - name: Run game-tagged unit tests
+        run: ./gradlew testJunit --no-daemon --console=plain
+
+  gametest:
+    name: GameTest smoke (headless)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle (wrapper + dependency/build cache)
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Run headless GameTestServer smoke test
+        run: |
+          # GameTestServer runs all registered gametests, then shuts down.
+          # With heavy mods (Create) the shutdown can hang after the tests
+          # passed, so the run is time-bounded and the success marker in the
+          # server log is the actual pass/fail signal.
+          timeout 1200 ./gradlew runGameTestServer --no-daemon --console=plain || true
+          grep -q "required tests passed" runs/gameTestServer/logs/latest.log
+
+  clientsmoke:
+    name: Client smoke test (Xvfb + software GL)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Gradle (wrapper + dependency/build cache)
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install Xvfb + Mesa (software GL)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends xvfb \
+            libgl1 libgl1-mesa-dri libegl1 libglu1-mesa libx11-6 libxext6 \
+            libxi6 libxrandr2 libxinerama1 libxcursor1 libxkbcommon0 \
+            libasound2t64 libxxf86vm1 mesa-utils
+
+      - name: Boot client under Xvfb (marker-based smoke test)
+        run: |
+          # Boots the real LWJGL client on a virtual display with software
+          # rendering (Mesa llvmpipe). Success = the log shows that the window
+          # was created AND our mod's client setup ran; the process is then
+          # killed deliberately (marker-kill + timeout) so the job always
+          # terminates - same technique as the GameTestServer marker check.
+          rm -rf runs/client/logs
+          set +e
+          setsid timeout 900 xvfb-run -a -s "-screen 0 1280x720x24" \
+            ./gradlew runClient --no-daemon --console=plain > /tmp/client-smoke.log 2>&1 &
+          PID=$!
+          OK=0
+          for i in $(seq 1 60); do
+            if grep -q "Backend library: LWJGL" runs/client/logs/latest.log 2>/dev/null \
+               && grep -q "Lens provider registry initialized" runs/client/logs/latest.log 2>/dev/null; then
+              OK=1
+              break
+            fi
+            if ! kill -0 "$PID" 2>/dev/null; then
+              echo "::error::runClient exited before the boot markers appeared"
+              break
+            fi
+            sleep 10
+          done
+          # deliberate, reliable shutdown of the whole process group
+          kill -- -"$PID" 2>/dev/null
+          sleep 5
+          pkill -9 -f Xvfb 2>/dev/null
+          set -e
+          if [ "$OK" != "1" ]; then
+            echo "::error::client smoke test failed - boot markers not found"
+            echo "--- gradle console (tail) ---"
+            tail -n 60 /tmp/client-smoke.log || true
+            echo "--- client log (tail) ---"
+            tail -n 40 runs/client/logs/latest.log 2>/dev/null || true
+            exit 1
+          fi
+          echo "CLIENT SMOKE TEST OK: window created + mod client setup ran"

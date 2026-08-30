@@ -72,6 +72,12 @@ runs {
         systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
     }
 
+    // NeoGradle JUnit environment (forgejunitdev): runs the "game"-tagged
+    // tests in src/test with bootstrapped vanilla Minecraft classes, no GL.
+    junit {
+        unitTestSources sourceSets.test
+    }
+
     data {
         // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
         // workingDirectory project.file('run-data')
@@ -118,6 +124,60 @@ dependencies {
     // localRuntime: AE2 + GuideME are present for dev-run testing, but never published as dependencies.
     localRuntime "maven.modrinth:ae2:${ae2_version}"
     localRuntime "maven.modrinth:guideme:${guideme_version}"
+
+    // ---- unit tests ----
+    // JUnit 5. `./gradlew test` runs the headless POJO tests; `./gradlew testJunit`
+    // additionally runs the tests tagged "game" inside the NeoGradle JUnit
+    // environment (forgejunitdev: vanilla Minecraft classes bootstrapped, no GL).
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// Headless POJO tests (pure data logic, no Minecraft): the plain Gradle `test` task.
+tasks.named('test', Test) {
+    useJUnitPlatform {
+        excludeTags 'game'
+    }
+}
+
+// Tests that need vanilla Minecraft classes (e.g. the real BlockEntityType
+// registry) run in NeoGradle's forgejunitdev environment - no display/GL needed.
+// testJunit is registered lazily by the NeoGradle userdev plugin, so the
+// configuration must happen after evaluation.
+afterEvaluate {
+    tasks.named('testJunit', Test) {
+        useJUnitPlatform {
+            includeTags 'game'
+        }
+    }
+
+    // NeoGradle reuses the plain `test` task for the junit run when the run
+    // has modSources={main} + unitTestSources={test} (which is exactly our
+    // setup). That would turn `test` into a forgejunitdev run - restore it as
+    // a plain headless JUnit task for the POJO tests here.
+    //
+    // junit-fml additionally registers a JUnit LauncherSessionListener that
+    // reads System.getProperty("fml.junit.argsfile", "mainargs.txt") and
+    // crashes the worker when that file does not exist - which is the case
+    // for a plain run. The POJO tests do not need the FML test machinery, so
+    // drop junit-fml from the classpath entirely.
+    tasks.named('test', Test) {
+        useJUnitPlatform {
+            excludeTags 'game'
+        }
+        jvmArgs([])
+        systemProperties.clear()
+        environment.clear()
+        classpath = sourceSets.test.runtimeClasspath.filter { !it.name.startsWith('junit-fml-') }
+        workingDir = projectDir
+        testClassesDirs = sourceSets.test.output
+    }
+
+    // testJunit boots the game (forgejunitdev) and is slow; keep it out of the
+    // default build/check graph. CI runs it explicitly in the "unit-tests" job.
+    tasks.named('check') {
+        dependsOn -= tasks.named('testJunit')
+    }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

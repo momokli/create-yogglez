@@ -2,6 +2,8 @@
 
 ![create:yogglez lens concept](mod-design/create_brille_lenses.jpg)
 
+[![Build (Linux)](https://github.com/momokli/create-yogglez/actions/workflows/build.yml/badge.svg)](https://github.com/momokli/create-yogglez/actions/workflows/build.yml)
+
 A central, modular goggle framework for Minecraft modpacks — built on top of the
 Create **Engineer's Goggles**.
 
@@ -66,13 +68,43 @@ A proof-of-concept implementation of the core lens framework on
 
 ```bash
 # JDK 21 required (e.g. Temurin 21); Gradle 9.2.1 wrapper included
-./gradlew build          # compiles + runs processResources (green)
+./gradlew build          # compiles + runs processResources + headless unit tests (green)
+./gradlew test           # headless POJO unit tests only (pure data logic, no Minecraft)
+./gradlew testJunit      # game-tagged unit tests (boots vanilla classes, no display/GL)
 ./gradlew runGameTestServer   # headless gametests (3/3 pass, see below)
 ./gradlew runClient      # dev client (needs a display)
 ```
 
 Dev-run runtime mods (Create, Ponder, Flywheel, Vanillin, Registrate, AE2, GuideME)
 are pulled from the configured Maven repositories automatically.
+
+The build is fully **headless Linux-compatible** (JDK 21 Temurin, no display
+needed for `build`/`runGameTestServer`/`test`/`testJunit`) and is verified in CI
+on every push/PR via GitHub Actions (`./gradlew build` incl. headless unit tests,
+`testJunit`, headless `runGameTestServer` smoke test and an Xvfb-based client
+smoke test, see below). Note: the GameTestServer can hang during shutdown with
+heavy mods loaded — CI handles that by checking the "tests passed" marker in the
+server log.
+
+### Automated client smoke test
+
+CI boots the real LWJGL client on a virtual display (`xvfb-run`, software GL via
+Mesa llvmpipe) and considers the smoke test passed when the client log shows that
+the window was created and the mod's client setup ran ("Lens provider registry
+initialized"). The client is then killed deliberately (marker-kill + timeout), so
+the CI job always terminates.
+
+Locally the same check runs with:
+
+```bash
+# Debian/Ubuntu: sudo apt-get install xvfb libgl1 libgl1-mesa-dri libegl1 mesa-utils
+rm -rf runs/client/logs
+xvfb-run -a -s "-screen 0 1280x720x24" ./gradlew runClient &
+# wait until runs/client/logs/latest.log contains the markers above, then kill the process
+```
+
+This catches display/GL/bootstrap regressions (e.g. Flywheel/Create shader
+issues) that the headless builds cannot see.
 
 ### Milestones
 
@@ -127,6 +159,9 @@ are pulled from the configured Maven repositories automatically.
   overlays and power-cell specifics are follow-ups.
 
 ### Manual client smoke test
+
+> An **automated** variant of this runs in CI on a virtual display (see
+> "Automated client smoke test" above); the manual run is for visual checks.
 
 ```text
 1. ./gradlew runClient
