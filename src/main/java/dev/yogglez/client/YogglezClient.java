@@ -1,10 +1,13 @@
 package dev.yogglez.client;
 
+import java.util.Map;
+
 import dev.yogglez.YogglezMod;
 import dev.yogglez.client.hud.LensHudOverlay;
 import dev.yogglez.client.overlay.LensOverlayRenderer;
 import dev.yogglez.client.provider.Ae2NetworkProvider;
 import dev.yogglez.client.provider.DemoLensProvider;
+import dev.yogglez.lens.LensBindings;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -62,37 +65,56 @@ public final class YogglezClient {
 		event.registerAbove(VanillaGuiLayers.HOTBAR, lensHud, LensHudOverlay.OVERLAY);
 	}
 
-	/** Registers per-block-entity-type lens providers (client only). */
+	/**
+	 * Registers per-block-entity-type lens providers (client only).
+	 *
+	 * <p>The lens -> block entity type bindings live in the pure
+	 * {@link LensBindings} table (unit-tested headless); this method only
+	 * resolves the type ids against the game registries and wires the
+	 * provider instances into {@link LensProviderRegistry}.
+	 */
 	private static void initLensProviders() {
-		// ---- yogglez:demo (Insight Lens) for a few vanilla block entities ----
-		registerById("minecraft", "furnace", new DemoLensProvider());
-		registerById("minecraft", "chest", new DemoLensProvider());
-		registerById("minecraft", "hopper", new DemoLensProvider());
-		registerById("minecraft", "brewing_stand", new DemoLensProvider());
+		boolean ae2Loaded = ModList.get().isLoaded("ae2");
 
-		// ---- ae2:network (Network Lens) - only if AE2 is loaded ----
-		if (ModList.get().isLoaded("ae2")) {
-			Ae2NetworkProvider provider = new Ae2NetworkProvider();
-			String[] ae2Types = { "controller", "drive", "energy_acceptor", "cell_workbench",
-				"pattern_provider", "interface", "chest" };
-			for (String type : ae2Types)
-				registerById("ae2", type, provider);
-			LOGGER.info("AE2 detected - network lens providers registered");
-		} else {
-			LOGGER.info("AE2 not loaded - network lens provider skipped");
+		for (Map.Entry<String, java.util.List<String>> binding : LensBindings.all().entrySet()) {
+			String lensId = binding.getKey();
+
+			// ae2:network is only registered when AE2 is actually loaded
+			if (LensBindings.AE2_NETWORK_LENS.equals(lensId) && !ae2Loaded) {
+				LOGGER.info("AE2 not loaded - network lens provider skipped");
+				continue;
+			}
+
+			LensInfoProvider provider = LensBindings.DEMO_LENS.equals(lensId)
+				? new DemoLensProvider()
+				: new Ae2NetworkProvider();
+			for (String typeId : binding.getValue())
+				registerById(typeId, provider);
+
+			if (LensBindings.AE2_NETWORK_LENS.equals(lensId))
+				LOGGER.info("AE2 detected - network lens providers registered");
 		}
 
 		Minecraft mc = Minecraft.getInstance();
 		LOGGER.info("Lens provider registry initialized on {}", mc != null ? mc.getUser().getName() : "?");
 	}
 
-	private static void registerById(String namespace, String path, dev.yogglez.client.LensInfoProvider provider) {
-		BlockEntityType<?> type = BuiltInRegistries.BLOCK_ENTITY_TYPE
-			.get(ResourceLocation.fromNamespaceAndPath(namespace, path));
-		if (type != null) {
-			LensProviderRegistry.register(type, provider);
-		} else {
-			LOGGER.warn("Block entity type {}:{} not found, provider skipped", namespace, path);
+	private static void registerById(String fullId, LensInfoProvider provider) {
+		String[] parts = fullId.split(":", 2);
+		if (parts.length != 2) {
+			LOGGER.warn("Invalid block entity type id '{}', provider skipped", fullId);
+			return;
+		}
+		try {
+			BlockEntityType<?> type = BuiltInRegistries.BLOCK_ENTITY_TYPE
+				.get(ResourceLocation.fromNamespaceAndPath(parts[0], parts[1]));
+			if (type != null) {
+				LensProviderRegistry.register(type, provider);
+			} else {
+				LOGGER.warn("Block entity type {} not found, provider skipped", fullId);
+			}
+		} catch (RuntimeException e) {
+			LOGGER.warn("Block entity type {} not resolvable, provider skipped ({})", fullId, e.toString());
 		}
 	}
 }

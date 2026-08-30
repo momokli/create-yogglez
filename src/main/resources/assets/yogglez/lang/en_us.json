@@ -18,7 +18,7 @@
   "gui.yogglez.test_machine.throughput": "Throughput: %s",
   "gui.yogglez.test_machine.debug": "BE: %s at %s",
   "lens.yogglez.demo.header": "Insight Analysis",
-  "lens.yogglez.demo.block": "Block: ",
+  "lens.yogglez.demo.block": "Block: %s",
   "lens.yogglez.demo.type": "Type: %s",
   "lens.yogglez.demo.pos": "Pos: %s, %s, %s",
   "lens.yogglez.demo.nbt_keys": "NBT keys (%s):",
