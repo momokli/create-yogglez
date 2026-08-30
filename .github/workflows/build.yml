@@ -105,7 +105,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends xvfb \
             libgl1 libgl1-mesa-dri libegl1 libglu1-mesa libx11-6 libxext6 \
             libxi6 libxrandr2 libxinerama1 libxcursor1 libxkbcommon0 \
-            libasound2 libxxf86vm1 mesa-utils
+            libasound2t64 libxxf86vm1 mesa-utils
 
       - name: Boot client under Xvfb (marker-based smoke test)
         run: |
