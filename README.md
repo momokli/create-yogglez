@@ -10,20 +10,16 @@ engineer's goggles with **lenses**. The goggles take over UI and information dis
 
 ## Core idea
 
-- **Create integration as the foundation** — the Engineer's Goggles are extended
-  with a modular lens system.
-- **Pure analysis upgrade** — the goggles only display information. Physical
-  tools (e.g. wrenches) stay in your hand for manual interaction.
-- **Developer API for modpacks** — pack authors can integrate third-party
-  analysis tools (e.g. via JSON/KubeJS) as goggle lenses.
-- **Physical item, not a client-side overlay** — the goggles are a real, server-side item that you must
-  craft, wear, and expand, where adding different lenses expand your access to specific analysis tools from diffrent third-party-mods.
+- **Create integration as the foundation** — the Engineer's Goggles are extended with a modular lens system.
+- **Pure analysis upgrade** — the goggles only display information; physical tools stay in your hand for manual interaction.
+- **Modular physical sockets** — lenses are physical items slotted directly into the server-side goggle frame.
+- **Data-driven extensibility** — pack authors can integrate third-party analysis tools via JSON and KubeJS.
 
-  ## Design Philosophy
+## Design Philosophy
 
   - **Inventory Freedom & Constant Readiness:** Consolidating half a dozen niche diagnostic tools (multimeters, network tools, scanners)
     into a single worn headgear keeps vital inventory space open. Once earned and installed, the right analytical tool is always active when
-    looking at a machine (or manually selecteced, if multiple possibilitys apply) , removing tedious tool-swapping and inventory management
+    looking at a machine (or manually selecteced, if multiple possibilities apply) , removing tedious tool-swapping and inventory management
     while preserving the weight of progression.
   - **Pedagogical Progression & Narrative Gating:** Withholding holistic data overlays until a lens is physically crafted and unlocked enforces
     a natural learning curve. Players must first engage with individual machine components manually to understand how systems work at a
