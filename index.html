@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yogglez — Modular Goggle Framework for Minecraft</title>
+<meta name="description" content="Yogglez (create:yogglez) — a central, modular goggle framework for Minecraft modpacks with data-driven JSON and KubeJS extensibility.">
+<style>
+  :root { color-scheme: light dark; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: #1a1a1a;
+    background: #fafafa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { color: #e8e8e8; background: #141414; }
+    a { color: #7cb3ff; }
+  }
+  main { flex: 1; max-width: 42rem; margin: 0 auto; padding: 4rem 1.5rem 2rem; }
+  h1 { font-size: 2.2rem; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+  .tagline { font-size: 1.15rem; color: #555; margin-bottom: 1.5rem; }
+  @media (prefers-color-scheme: dark) { .tagline { color: #aaa; } }
+  .badge {
+    display: inline-block; font-size: 0.8rem; font-weight: 600;
+    border: 1px solid #d4a72c; color: #8a6d1a; background: #fdf6e3;
+    padding: 0.15rem 0.7rem; border-radius: 999px; margin-bottom: 1.75rem;
+  }
+  @media (prefers-color-scheme: dark) { .badge { border-color: #d4a72c; color: #f0d77a; background: #2a2408; } }
+  p { margin-bottom: 1rem; }
+  ul { margin: 0 0 1.5rem 1.4rem; }
+  .links { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem; }
+  .links a { font-weight: 600; text-decoration: none; border-bottom: 2px solid currentColor; }
+  footer {
+    padding: 1rem 1.5rem; text-align: center;
+    font-size: 0.8rem; color: #888;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Yogglez</h1>
+  <p class="tagline">A central, modular goggle framework for Minecraft modpacks — data-driven JSON and KubeJS extensibility.</p>
+  <span class="badge">Work in progress</span>
+  <p>
+    Instead of carrying a separate handheld analyzer for every mod, you equip a unified pair of goggles
+    and upgrade them with <strong>lenses</strong>. The headgear handles UI and information display exclusively,
+    operating as a standalone framework that can optionally integrate with Create&rsquo;s <em>Engineer&rsquo;s Goggles</em>.
+  </p>
+  <ul>
+    <li>Universal modular headgear with a modular lens system</li>
+    <li>Pure analysis — goggles display information, tools stay in your hand</li>
+    <li>Modular physical sockets for server-side lens items</li>
+    <li>Data-driven extensibility via JSON and KubeJS</li>
+  </ul>
+  <div class="links">
+    <a href="https://github.com/momokli/create-yogglez">GitHub Repository</a>
+  </div>
+</main>
+<footer>Yogglez &mdash; a Minecraft modding project. Not affiliated with Mojang or Create.</footer>
+</body>
+</html>
