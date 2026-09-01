@@ -1,6 +1,6 @@
 # create?:yogglez
 
-![create:yogglez lens concept](mod-design/Yoggelz%20v2.png)
+![create:yogglez lens concept](mod-design/Yoggelz%20v3.png)
 
 A **central, modular goggle framework** for Minecraft modpacks that empowers pack creators and players
 with data-driven **JSON and KubeJS extensibility**.
