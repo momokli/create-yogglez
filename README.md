@@ -1,19 +1,31 @@
-# create:yogglez
+# create?:yogglez
 
 ![create:yogglez lens concept](mod-design/create_brille_lenses.jpg)
 
-A central, modular goggle framework for Minecraft modpacks, built on top of the
-Create **Engineer's Goggles**.
+A **central, modular goggle framework** for Minecraft modpacks that empowers pack creators and players
+with data-driven **JSON and KubeJS extensibility**.
 
-Instead of carrying a separate handheld analyzer for every mod, you upgrade the
-engineer's goggles with **lenses**. The goggles take over UI and information display exclusively.
+Instead of carrying a separate handheld analyzer for every mod, you equip a unified pair of goggles
+and upgrade them with **lenses**. The headgear takes over UI and information display exclusively, operating as a **standalone framework**
+that can optionally integrate with popular aesthetics like Create's *Engineer's Goggles*.
 
 ## Core idea
 
-- **Create integration as the foundation** — the Engineer's Goggles are extended with a modular lens system.
+- **Universal modular headgear** — a dedicated goggle framework equipped with a modular lens system to analyze machinery and networks.
 - **Pure analysis upgrade** — the goggles only display information; physical tools stay in your hand for manual interaction.
 - **Modular physical sockets** — lenses are physical items slotted directly into the server-side goggle frame.
 - **Data-driven extensibility** — pack authors can integrate third-party analysis tools via JSON and KubeJS.
+
+## To Be Discussed
+
+- **Network and Data Synchronization** How does the server-authoritative architecture ensure that a lens defined via JSON or KubeJS renders
+- flawlessly on the client and is supplied with data without requiring the client to execute modified code?
+- **Maintainability and Longevity** When mods are updated (e.g., API methods for AE2 or Immersive Engineering change), how does the JSON system
+- protect pack creators from silent failures or game crashes during runtime?
+- **Cross-Mod Base Compatibility & Standalone Headgear** How will decoupling the mod from Create's Engineer's Goggles
+- affect the asset pipeline, crafting progression, and default item registry for modpacks that choose not to include Create at all?
+- **Dual-Base Asset & Model Overhead:** What is the technical and artistic scope required to maintain both a standalone "default" goggle
+- asset/model and an optional "Create-integrated" base, and how will players toggle or configure between them?
 
 ## Design Philosophy
 
