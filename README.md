@@ -16,7 +16,21 @@ engineer's goggles with **lenses**. The goggles take over UI and information dis
   tools (e.g. wrenches) stay in your hand for manual interaction.
 - **Developer API for modpacks** — pack authors can integrate third-party
   analysis tools (e.g. via JSON/KubeJS) as goggle lenses.
-- **Physical item, not a client-side overlay** — the goggles are a real, server-side item that you must craft, wear, and expand, where different lenses are slotted into the frame. Client-side-only approaches completely miss the vision because they grant information freely without tying it to actual gameplay progression.
+- **Physical item, not a client-side overlay** — the goggles are a real, server-side item that you must
+  craft, wear, and expand, where adding different lenses expand your access to specific analysis tools from diffrent third-party-mods.
+
+  ## Design Philosophy
+
+  - **Inventory Freedom & Constant Readiness:** Consolidating half a dozen niche diagnostic tools (multimeters, network tools, scanners)
+    into a single worn headgear keeps vital inventory space open. Once earned and installed, the right analytical tool is always active when
+    looking at a machine (or manually selecteced, if multiple possibilitys apply) , removing tedious tool-swapping and inventory management
+    while preserving the weight of progression.
+  - **Pedagogical Progression & Narrative Gating:** Withholding holistic data overlays until a lens is physically crafted and unlocked enforces
+    a natural learning curve. Players must first engage with individual machine components manually to understand how systems work at a
+    granular level, turning the lens into a hard-earned reward for mastering the underlying mechanics.
+  - **Decentralized Open Platform:** Moving beyond a static feature set, the JSON and KubeJS integration architecture empowers pack creators to build
+    and share their own lens definitions. This creates an open, decentralized ecosystem where pack authors can bypass waiting for official mod
+    updates and seamlessly expand analytical support for any mod.
 
 ## Example lenses (handheld-analyzer replacements)
 
