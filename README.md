@@ -16,7 +16,7 @@ engineer's goggles with **lenses**. The goggles take over UI and information dis
   tools (e.g. wrenches) stay in your hand for manual interaction.
 - **Developer API for modpacks** — pack authors can integrate third-party
   analysis tools (e.g. via JSON/KubeJS) as goggle lenses.
-- **Physical item, not a client-side overlay** — the goggles are a real, server-side item that you must craft, hold, wear, and trade, where different physical lenses are physically slotted into the frame. Client-side-only approaches (such as typical UI overlays or mods like Create: Cyber Goggles) completely miss the vision because they grant information freely without tying it to actual gameplay progression._goggles.md).
+- **Physical item, not a client-side overlay** — the goggles are a real, server-side item that you must craft, wear, and expand, where different lenses are slotted into the frame. Client-side-only approaches completely miss the vision because they grant information freely without tying it to actual gameplay progression.
 
 ## Example lenses (handheld-analyzer replacements)
 
