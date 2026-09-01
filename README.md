@@ -18,14 +18,18 @@ that can optionally integrate with popular aesthetics like Create's *Engineer's 
 
 ## To Be Discussed
 
-- **Network and Data Synchronization** How does the server-authoritative architecture ensure that a lens defined via JSON or KubeJS renders
-- flawlessly on the client and is supplied with data without requiring the client to execute modified code?
-- **Maintainability and Longevity** When mods are updated (e.g., API methods for AE2 or Immersive Engineering change), how does the JSON system
-- protect pack creators from silent failures or game crashes during runtime?
-- **Cross-Mod Base Compatibility & Standalone Headgear** How will decoupling the mod from Create's Engineer's Goggles
-- affect the asset pipeline, crafting progression, and default item registry for modpacks that choose not to include Create at all?
-- **Dual-Base Asset & Model Overhead:** What is the technical and artistic scope required to maintain both a standalone "default" goggle
-- asset/model and an optional "Create-integrated" base, and how will players toggle or configure between them?
+- **Network and Data Synchronization:** How does the server-authoritative architecture ensure that a lens defined via JSON or KubeJS renders
+flawlessly on the client and is supplied with data without requiring the client to execute modified code?
+- **Maintainability and Longevity:** When mods are updated (e.g., API methods for AE2 or Immersive Engineering change), how does the JSON system
+protect pack creators from silent failures or game crashes during runtime?
+-  **Cross-Mod Base Compatibility & Standalone Headgear:** How will the mod handle self-contained progression and vanilla-based crafting recipes for packs
+that exclude Create entirely, while still supporting optional upgrade paths if Create is present?
+- **Asset Pipeline & Dual-Base Theming:** What is the artistic and technical scope for maintaining a neutral, standalone default goggle asset alongside an
+optional Create-integrated variant without adding unnecessary overhead?
+- **Soft-Dependency Decoupling:** How should equipment checks and wear predicates (such as Create's `addIsWearingPredicate`) be refactored into a soft-dependency
+plugin architecture to ensure crash-free operation across diverse modpacks?
+- **Data-Driven Extensibility & Script Safety:** How can the framework architect KubeJS hooks and datapack JSON loaders to support
+  hot-reloading via `/reload` while maintaining strict server-authoritative boundaries?
 
 ## Design Philosophy
 
