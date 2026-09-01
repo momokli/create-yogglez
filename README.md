@@ -2,12 +2,11 @@
 
 ![create:yogglez lens concept](mod-design/create_brille_lenses.jpg)
 
-A central, modular goggle framework for Minecraft modpacks — built on top of the
+A central, modular goggle framework for Minecraft modpacks, built on top of the
 Create **Engineer's Goggles**.
 
 Instead of carrying a separate handheld analyzer for every mod, you upgrade the
-engineer's goggles with swappable **lenses**. The goggles stay a physical tool
-in your hand, but take over UI and information display exclusively.
+engineer's goggles with **lenses**. The goggles take over UI and information display exclusively.
 
 ## Core idea
 
