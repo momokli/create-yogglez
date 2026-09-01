@@ -10,14 +10,14 @@
 - **Strikte Phasenfolge:** `concept → PoC → concept → MVP → concept → alpha`. Die concept-Phasen haben je einen eigenen Zweck (Produktkonzept / Technische Architektur / Alpha-Definition) und sind keine Wiederholung.
 - Jede Phase hat **Goal, Scope, Deliverables, Exit-Criteria (messbar), Risiken**. Eine Phase ist erst abgeschlossen, wenn ihre Exit-Criteria erfüllt sind.
 - **Proposed-Charakter:** Phasen ab MVP sind Zielbilder, keine Zusagen. Verschiebungen werden im Changelog dokumentiert.
-- Abgeschlossene Phasen (0 teilweise, 1 vollständig) sind als Referenz markiert, nicht zur Wiederholung gedacht.
+- Abgeschlossene Phasen (2 teilweise, 0 vollständig) sind als Referenz markiert, nicht zur Wiederholung gedacht.
 
 ## 2. Phasenübersicht
 
 | Phase | Typ | Ziel | Status |
 |---|---|---|---|
 | 0 | **concept** | Produktkonzept, Abgrenzung, Prinzipien | teilweise abgeschlossen (Docs vorhanden, VISION.md neu) |
-| 1 | **PoC** | Machbarkeit des Linsen-Kerns beweisen | ✅ abgeschlossen (PR #1) |
+| 1 | **PoC** | Machbarkeit des Linsen-Kerns beweisen | in Arbeit — Dev-Machbarkeit bewiesen (PR #1); offen: Auslieferung im ftb-skies-2-aero-Pack + Client-Verifikation |
 | 2 | **concept** | Architektur: Standalone-Soft-Dependency, Lens-API, JSON/KubeJS-Schema | offen — nächster Schritt |
 | 3 | **MVP** | Datengetriebenes, standalone-fähiges Release (Modrinth) | offen |
 | 4 | **concept** | Alpha-Definition aus der Server-Mod-Liste (dieses Dokument §8) | Entwurf in diesem PR |
@@ -47,9 +47,9 @@
 - Konzept-Overengineering ohne Nutzer-Feedback (Gegengewicht: POC existiert, Aero-Server als Realtest)
 - Verzetteln an der Create-Bindungsfrage (wird in Phase 2 entschieden, nicht hier)
 
-## 4. Phase 1 — PoC: Machbarkeit (✅ abgeschlossen)
+## 4. Phase 1 — PoC: Machbarkeit (in Arbeit — Auslieferungs-Gates offen)
 
-**Goal:** Beweisen, dass ein modulares Linsensystem auf Create-Overlay + Fremd-API machbar ist.
+**Goal:** Beweisen, dass ein modulares Linsensystem auf Create-Overlay + Fremd-API machbar ist — **und es im ftb-skies-2-aero-Modpack auszuliefern sowie client-seitig zu verifizieren**. Erst wenn diese Auslieferungs-Gates erfüllt sind, gilt die Phase als abgeschlossen.
 
 **Scope:** M0–M3 — eigene `yogglez:yogglez_goggles`, Lens-Item mit Item-Data-Speicherung, Cycle-Keybind (`H`), Create-Overlay via `IHaveGoggleInformation`/`GogglesItem.addIsWearingPredicate`, Client-Provider-Registry (ohne Mixins), AE2-Network-Lens strikt über `appeng.api`, HUD-Indikator, I18n de/en.
 
@@ -57,12 +57,18 @@
 - Branch `feature/poc`, PR #1 (gemerged)
 - 3/3 Headless-Gametests, CI-Build + Xvfb-Client-Smoke-Test
 - POC-Erfahrungsbericht: `progress-feature-poc.md` (Repo-intern), README-POC-Sektion
+- **Auslieferung im ftb-skies-2-aero-Pack:** yogglez-Mod ist im Pack enthalten (Mod-Datei + Manifest-/Mods-Listeneintrag), Server startet damit (Start-Test auf der Dev-Instanz auf `planet`)
+- **Client-Verifikation:** manueller Live-Test auf einer echten Client-Instanz mit yizzl/Momo — Brille aufsetzbar, Linse installier-/aktivierbar, Overlay im Spiel sichtbar (nicht nur Xvfb-Smoke-Test)
 
-**Exit-Criteria (erfüllt, Stand Sep 2026):**
+**Exit-Criteria — Dev-Machbarkeit (erfüllt, Stand Sep 2026):**
 - [x] `./gradlew build` grün (auch clean)
 - [x] 3/3 Gametests: Goggle-Tooltip, Lens-Lifecycle (install/activate/cycle/NBT), Lens-Registry
 - [x] AE2-Daten (Grid, Kanäle, Energie, Puffer) via öffentlicher API nachgewiesen
 - [x] CI: Linux headless + Xvfb-Client-Smoke-Test
+
+**Exit-Criteria — finale Auslieferungs-Gates (noch offen — erst damit ist die Phase abgeschlossen):**
+- [ ] **Auslieferung im ftb-skies-2-aero-Modpack:** PoC ist als Mod im Pack enthalten (Mod-Datei + Manifest-Eintrag) und der Server startet damit (Start-Test auf der Dev-Instanz, nicht nur lokale Dev-Umgebung)
+- [ ] **Client-seitig verifiziert funktionsfähig:** Verifikation auf einer echten Client-Instanz im Live-Spiel (manueller Testlauf mit yizzl/Momo) — nicht nur serverseitige/dev-getestete Funktionalität oder Xvfb-Smoke-Test
 
 **Risiken (aus dem POC gelernt, für Phase 2 relevant):**
 - `LangBuilder.forGoggles()` ist client-only → Tooltip-Inhalt muss server-safe erzeugt werden (`collectGoggleContent()`)
